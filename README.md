@@ -1,7 +1,7 @@
 # Car-Rental-Project
 Readme güncellendi.
 
-<h1 style="text-align:center;">🚗 <b>Car Rental Platform</b> 🚗</h1>
+<h1 style="text-align:center;">🚗 <b>Araba Kiralama Platformu</b> 🚗</h1>
 
 <h2>📌 <b>Project Overview</b></h2>
 <p>This project is a web-based <b>Car Rental Platform</b> where users can easily browse, filter, and reserve cars. Admins can manage the cars (CRUD operations) via an admin panel, while users can make reservations based on availability.</p>
@@ -25,7 +25,7 @@ Readme güncellendi.
 
 <hr/>
 
-<h2>🛠️ <b>Technologies Used (Tech Stack)</b></h2>
+<h2>🛠️ <b>Tech Stack</b></h2>
 
 <table>
   <tr>
@@ -96,7 +96,7 @@ docker-compose up --build
 
 <hr/>
 
-<h2>📡 <b>API Endpoints (Sample)</b></h2>
+<h2>📡 <b>API Endpoints </b></h2>
 
 <table>
   <tr>
@@ -163,8 +163,8 @@ docker-compose up --build
 
 <h2>📨 <b>Contact</b></h2>
 <ul>
-  <li>İbrahim: ibrahim@example.com</li>
-  <li>Hakan: hakan@example.com</li>
-  <li>Emre: emre@example.com</li>
+  <li>İbrahim Ercan Gedik: ibrahimercangedik@ogr.iuc.edu.tr</li>
+  <li>Hakan Babur: hakanbabur@ogr.iuc.edu.tr</li>
+  <li>Emre Açıl:emreacil@ogr.iuc.edu.tr</li>
 </ul>
 

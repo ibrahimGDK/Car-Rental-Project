@@ -1,5 +1,5 @@
 # Car-Rental-Project
-Readme güncellendi.
+
 
 <h1 style="text-align:center;">🚗 <b>Araba Kiralama Platformu</b> 🚗</h1>
 

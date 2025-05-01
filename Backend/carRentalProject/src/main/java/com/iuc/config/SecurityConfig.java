@@ -1,7 +1,8 @@
 package com.iuc.config;
 
-//import com.patika.security.Jwt.AuthTokenFilter;  BUNUN KENDİNE GÖRE İMPORTUNU YAP
 
+
+import com.iuc.security.Jwt.AuthTokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

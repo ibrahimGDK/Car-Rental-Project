@@ -1,3 +1,11 @@
+server:
+  port: 8000
+  error:
+    include-binding-errors: always
+    include-message: always
+    include-stacktrace: never
+
+
 spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/car_rental_db

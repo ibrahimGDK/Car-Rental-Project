@@ -2,7 +2,6 @@ package com.iuc.security.service;
 
 
 
-// import com.patika.entities.User;
 import com.iuc.entities.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;

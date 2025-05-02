@@ -19,3 +19,17 @@ spring:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     properties:
       '[hibernate.format_sql]': true
+  mail:
+    host: sandbox.smtp.mailtrap.io
+    port: 587
+    username: 49549e509dbf21      # Mailtrap kullanıcı adınız
+    password: e4ef3bbb53dfc8      # Mailtrap şifreniz
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          ssl:
+            trust: "*"

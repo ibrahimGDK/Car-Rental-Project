@@ -1,5 +1,6 @@
 package com.iuc.service;
 
+import com.iuc.dto.request.RegisterRequest;
 import com.iuc.entities.User;
 import com.iuc.exception.ResourceNotFoundException;
 import com.iuc.exception.message.ErrorMessage;

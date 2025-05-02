@@ -53,6 +53,7 @@ public class SecurityConfig {
             "/swagger-ui/**", // swagger
             "/",
             "/api/email/**",
+            "/api/auth/verify",
             //"/students/**",
     };
     @Bean

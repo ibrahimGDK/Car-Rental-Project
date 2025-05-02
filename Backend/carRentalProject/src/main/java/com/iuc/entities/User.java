@@ -42,6 +42,9 @@ public class User {
     private String zipCode;
 
     @Column(nullable = false)
+    private Boolean emailVerified = false;
+
+    @Column(nullable = false)
     private Boolean builtIn = true ; // silinmemesi gereken user için bunu yaptık. dafault olarak false yaptık. ancak ilk admin
     // oluşturulurken bu özelliği TRUE yaparız. Bunu da bussiness logic olarak yapacağız
 // builtIn= yerleşik (örneğin, silinmemesi gereken bir yönetici) olup olmadığını belirlemek için kullanılır

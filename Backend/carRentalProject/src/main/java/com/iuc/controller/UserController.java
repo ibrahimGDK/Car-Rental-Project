@@ -1,6 +1,7 @@
 package com.iuc.controller;
 
 import com.iuc.dto.UserDTO;
+import com.iuc.dto.request.AdminUserUpdateRequest;
 import com.iuc.dto.request.UpdatePasswordRequest;
 import com.iuc.dto.request.UserUpdateRequest;
 import com.iuc.dto.response.ResponseMessage;
@@ -55,7 +56,7 @@ public class UserController {
 
     }
 
-    // !!! UpdateUser
+    // !!! UpdateUser (Giriş yapmış kullanıcı kendi profil bilgilerini günceller)
     @PutMapping
     @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
     public ResponseEntity<SfResponse> updateUser(
@@ -69,4 +70,20 @@ public class UserController {
         return ResponseEntity.ok(response);
 
     }
+
+    //!!! Admin herhangi bir kulllanıcıyı update etsin
+    @PutMapping("/{id}/auth")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<SfResponse> updateUserAuth(@PathVariable Long id,
+                                                     @Valid @RequestBody AdminUserUpdateRequest adminUserUpdateRequest) {
+        userService.updateUserAuth(id, adminUserUpdateRequest);
+
+        SfResponse response = new SfResponse();
+        response.setMessage(ResponseMessage.USER_UPDATE_RESPONSE_MESSAGE);
+        response.setSuccess(true);
+
+        return ResponseEntity.ok(response);
+    }
+
+
 }

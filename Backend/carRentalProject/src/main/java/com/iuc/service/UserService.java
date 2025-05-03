@@ -1,6 +1,7 @@
 package com.iuc.service;
 
 import com.iuc.dto.UserDTO;
+import com.iuc.dto.request.AdminUserUpdateRequest;
 import com.iuc.dto.request.RegisterRequest;
 import com.iuc.dto.request.UpdatePasswordRequest;
 import com.iuc.dto.request.UserUpdateRequest;
@@ -181,6 +182,71 @@ public class UserService {
                 userUpdateRequest.getAddress(),
                 userUpdateRequest.getZipCode());
     }
+
+
+    public void updateUserAuth(Long id, AdminUserUpdateRequest adminUserUpdateRequest) {
+        User user = getById(id);
+        //!!!built-in
+        if(user.getBuiltIn()){
+            throw new BadRequestException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
+        }
+        //!!! email kontrolu
+        boolean emailExist = userRepository.existsByEmail(adminUserUpdateRequest.getEmail());
+        if(emailExist && !adminUserUpdateRequest.getEmail().equals(user.getEmail())) {
+            throw new ConflictException(
+                    String.format(ErrorMessage.EMAIL_ALREADY_EXIST_MESSAGE,adminUserUpdateRequest.getEmail()));
+        }
+        //!!! passsword kontrol
+        if(adminUserUpdateRequest.getPassword()==null) {
+            adminUserUpdateRequest.setPassword(user.getPassword());
+        } else {
+            String encodedPassword =
+                    passwordEncoder.encode(adminUserUpdateRequest.getPassword());
+            adminUserUpdateRequest.setPassword(encodedPassword);
+        }
+        //!!! Role
+        Set<String> userStrRoles = adminUserUpdateRequest.getRoles();//Customer ya da Administrator değerini string olarak userStrRoles'e atadım
+
+        Set<Role> roles = convertRoles(userStrRoles);//String yapısında ki rolleri DB'de kayıtlı olduğu gibi ROLE_ADMIN ROLE_CUSTOMER şekline çevirdik
+
+        user.setFirstName(adminUserUpdateRequest.getFirstName());
+        user.setLastName(adminUserUpdateRequest.getLastName());
+        user.setEmail(adminUserUpdateRequest.getEmail());
+        user.setPassword(adminUserUpdateRequest.getPassword());
+        user.setPhoneNumber(adminUserUpdateRequest.getPhoneNumber());
+        user.setAddress(adminUserUpdateRequest.getAddress());
+        user.setZipCode(adminUserUpdateRequest.getZipCode());
+        user.setBuiltIn(adminUserUpdateRequest.getBuiltIn());
+        user.setRoles(roles);
+
+        userRepository.save(user);
+    }
+    public User getById(Long id){
+        User user = userRepository.findUserById(id).orElseThrow(()->
+                new ResourceNotFoundException(String.format(ErrorMessage.RESOURCE_NOT_FOUND_EXCEPTION)));
+        return user;
+    }
+
+    private Set<Role> convertRoles(Set<String> pRoles){ // pRoles={"Customer","Administrator"}
+        Set<Role> roles = new HashSet<>();
+
+        if(pRoles==null){//client tarafından roller boş gelirse ROLE_CUSTOMER olarak default değer girer
+            Role userRole = roleService.findByType(RoleType.ROLE_CUSTOMER);// Entity ler arası işlem yapıyorsam best practice  service.den service'e
+            roles.add(userRole);
+        } else {
+            pRoles.forEach(roleStr->{
+                if(roleStr.equals(RoleType.ROLE_ADMIN.getName())){
+                    Role adminRole = roleService.findByType(RoleType.ROLE_ADMIN);
+                    roles.add(adminRole);
+                } else {
+                    Role userRole = roleService.findByType(RoleType.ROLE_CUSTOMER);
+                    roles.add(userRole);
+                }
+            });
+        }
+        return roles;
+    }
+
 
 
 }

@@ -40,9 +40,10 @@ public class UserService {
     private final VerificationTokenRepository verificationTokenRepository;
     private final EmailService emailService;
     private final UserMapper userMapper;
+    private final ReservationService reservationService;
     public UserService(UserRepository userRepository,RoleService roleService,@Lazy PasswordEncoder passwordEncoder,
                        EmailVerificationService emailVerificationService,EmailService emailService,VerificationTokenRepository verificationTokenRepository,
-                       UserMapper userMapper) {
+                       UserMapper userMapper,ReservationService reservationService) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
@@ -50,6 +51,8 @@ public class UserService {
         this.emailService = emailService;
         this.verificationTokenRepository = verificationTokenRepository;
         this.userMapper = userMapper;
+        this.reservationService = reservationService;
+
     }
     public User getUserByEmail(String email){
         User user = userRepository.findByEmail(email).orElseThrow(
@@ -246,7 +249,21 @@ public class UserService {
         }
         return roles;
     }
+    public void removeUserById(Long id) {
+        User user = getById(id);
 
+        //!!!built-in
+        if(user.getBuiltIn()){
+            throw new BadRequestException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
+        }
+// !!! reservasyon kontrol
+        boolean exist =  reservationService.existByUser(user);
+        if(exist) {
+            throw  new BadRequestException(ErrorMessage.USER_CANT_BE_DELETED_MESSAGE);
+        }
+        userRepository.deleteById(id);
+
+    }
 
 
 }

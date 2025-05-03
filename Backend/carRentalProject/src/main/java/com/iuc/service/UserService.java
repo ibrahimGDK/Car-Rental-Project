@@ -1,5 +1,6 @@
 package com.iuc.service;
 
+import com.iuc.dto.UserDTO;
 import com.iuc.dto.request.RegisterRequest;
 import com.iuc.entities.Role;
 import com.iuc.entities.User;
@@ -8,6 +9,7 @@ import com.iuc.entities.enums.RoleType;
 import com.iuc.exception.ConflictException;
 import com.iuc.exception.ResourceNotFoundException;
 import com.iuc.exception.message.ErrorMessage;
+import com.iuc.mapper.UserMapper;
 import com.iuc.repository.UserRepository;
 import com.iuc.repository.VerificationTokenRepository;
 import org.springframework.context.annotation.Lazy;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -30,14 +33,17 @@ public class UserService {
     private final EmailVerificationService emailVerificationService;
     private final VerificationTokenRepository verificationTokenRepository;
     private final EmailService emailService;
+    private final UserMapper userMapper;
     public UserService(UserRepository userRepository,RoleService roleService,@Lazy PasswordEncoder passwordEncoder,
-                       EmailVerificationService emailVerificationService,EmailService emailService,VerificationTokenRepository verificationTokenRepository) {
+                       EmailVerificationService emailVerificationService,EmailService emailService,VerificationTokenRepository verificationTokenRepository,
+                       UserMapper userMapper) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
         this.roleService = roleService;
         this.emailVerificationService = emailVerificationService;
         this.emailService = emailService;
         this.verificationTokenRepository = verificationTokenRepository;
+        this.userMapper = userMapper;
     }
     public User getUserByEmail(String email){
         User user = userRepository.findByEmail(email).orElseThrow(
@@ -101,6 +107,12 @@ public class UserService {
         String body = "Lütfen hesabınızı doğrulamak için aşağıdaki bağlantıyı tıklayın: \n" + verificationUrl;
 
         emailService.sendEmail(user.getEmail(), subject, body);
+    }
+
+    public List<UserDTO> getAllUsers() {
+        List<User> users =  userRepository.findAll();
+        List<UserDTO> userDTOs = userMapper.map(users);
+        return userDTOs;
     }
 
 }

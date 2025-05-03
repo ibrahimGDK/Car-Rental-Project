@@ -2,16 +2,19 @@ package com.iuc.service;
 
 import com.iuc.dto.UserDTO;
 import com.iuc.dto.request.RegisterRequest;
+import com.iuc.dto.request.UpdatePasswordRequest;
 import com.iuc.entities.Role;
 import com.iuc.entities.User;
 import com.iuc.entities.VerificationToken;
 import com.iuc.entities.enums.RoleType;
+import com.iuc.exception.BadRequestException;
 import com.iuc.exception.ConflictException;
 import com.iuc.exception.ResourceNotFoundException;
 import com.iuc.exception.message.ErrorMessage;
 import com.iuc.mapper.UserMapper;
 import com.iuc.repository.UserRepository;
 import com.iuc.repository.VerificationTokenRepository;
+import com.iuc.security.SecurityUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -122,6 +125,36 @@ public class UserService {
                         String.format(ErrorMessage.RESOURCE_NOT_FOUND_EXCEPTION, id)));
 
         return userMapper.userToUserDTO(user);
+    }
+
+    //UPDATE PASSWORD
+    public void updatePassword(UpdatePasswordRequest updatePasswordRequest) {
+
+        User user = getCurrentUser();
+
+        // !!! builtIn ???
+        if(user.getBuiltIn()){
+            throw new BadRequestException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
+        }
+        // !!! Forma girilen OldPassword doğru mu
+        if(!passwordEncoder.matches(updatePasswordRequest.getOldPassword(), user.getPassword())) {
+            throw new BadRequestException(ErrorMessage.PASSWORD_NOT_MATCHED_MESSAGE);
+        }//matches : yeni şifreyi encode edip eski enceded şifre ile karşılaştırır
+
+        // !!! yeni gelen şifreyi encode edilecek
+        String hashedPassword =passwordEncoder.encode(updatePasswordRequest.getNewPassword());
+        user.setPassword(hashedPassword);
+
+        userRepository.save(user);
+    }
+
+    public User getCurrentUser(){
+        String email =  SecurityUtils.getCurrentUserLogin().orElseThrow(()->
+                new ResourceNotFoundException(ErrorMessage.PRINCIPAL_FOUND_MESSAGE));
+        User user =  getUserByEmail(email);
+
+        return user;
+
     }
 
 }

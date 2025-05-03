@@ -3,6 +3,7 @@ package com.iuc.service;
 import com.iuc.dto.UserDTO;
 import com.iuc.dto.request.RegisterRequest;
 import com.iuc.dto.request.UpdatePasswordRequest;
+import com.iuc.dto.request.UserUpdateRequest;
 import com.iuc.entities.Role;
 import com.iuc.entities.User;
 import com.iuc.entities.VerificationToken;
@@ -18,6 +19,7 @@ import com.iuc.security.SecurityUtils;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -156,5 +158,29 @@ public class UserService {
         return user;
 
     }
+    @Transactional
+//Arka arkaya birkaç query çalışacaksa bunu koymalıyız. mesela ilk 3 query çalıştı ancak 4. çalışmazsa ilk üçünüde iptal eder
+    public void updateUser(UserUpdateRequest userUpdateRequest) {
+        User user = getCurrentUser();
+        // !!! builtIn ???
+        if(user.getBuiltIn()){
+            throw new BadRequestException(ErrorMessage.NOT_PERMITTED_METHOD_MESSAGE);
+        }
+        // !!! email kontrol
+        boolean emailExist = userRepository.existsByEmail(userUpdateRequest.getEmail());
+        if(emailExist && !userUpdateRequest.getEmail().equals(user.getEmail())) {
+            throw new ConflictException(
+                    String.format(ErrorMessage.EMAIL_ALREADY_EXIST_MESSAGE,userUpdateRequest.getEmail()));
+        }
+
+        userRepository.update(user.getId(),
+                userUpdateRequest.getFirstName(),
+                userUpdateRequest.getLastName(),
+                userUpdateRequest.getPhoneNumber(),
+                userUpdateRequest.getEmail(),
+                userUpdateRequest.getAddress(),
+                userUpdateRequest.getZipCode());
+    }
+
 
 }

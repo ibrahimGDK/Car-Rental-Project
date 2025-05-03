@@ -2,6 +2,7 @@ package com.iuc.controller;
 
 import com.iuc.dto.UserDTO;
 import com.iuc.dto.request.UpdatePasswordRequest;
+import com.iuc.dto.request.UserUpdateRequest;
 import com.iuc.dto.response.ResponseMessage;
 import com.iuc.dto.response.SfResponse;
 import com.iuc.service.UserService;
@@ -54,4 +55,18 @@ public class UserController {
 
     }
 
+    // !!! UpdateUser
+    @PutMapping
+    @PreAuthorize("hasRole('ADMIN') or hasRole('CUSTOMER')")
+    public ResponseEntity<SfResponse> updateUser(
+            @Valid @RequestBody UserUpdateRequest userUpdateRequest) {//ön taraftan gelecek olan JSON dosyasında id, role, password gibi bilgilerin update edilememesi gerekir. Bu yüzden yeni bir DTO class oluşturduk
+        userService.updateUser(userUpdateRequest);
+
+        SfResponse response = new SfResponse();
+        response.setMessage(ResponseMessage.USER_UPDATE_RESPONSE_MESSAGE);
+        response.setSuccess(true);
+
+        return ResponseEntity.ok(response);
+
+    }
 }

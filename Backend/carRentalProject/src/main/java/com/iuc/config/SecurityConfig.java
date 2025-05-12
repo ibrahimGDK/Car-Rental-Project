@@ -49,7 +49,7 @@ public class SecurityConfig {
             "/register",
             "/login",
             "/v3/api-docs/**", // swagger
-            "swagger-ui.html", //swagger
+            "/swagger-ui.html", //swagger
             "/swagger-ui/**", // swagger
             "/",
             "/api/email/**",

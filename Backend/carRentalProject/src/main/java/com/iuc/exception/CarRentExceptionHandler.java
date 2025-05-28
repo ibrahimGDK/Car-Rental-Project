@@ -17,28 +17,15 @@ import java.util.*;
 import java.util.stream.*;
 
 @ControllerAdvice // merkezi exception classını belli  etmek için
-public class SafeRentExceptionHandler extends ResponseEntityExceptionHandler {
+public class CarRentExceptionHandler extends ResponseEntityExceptionHandler {
 
-    // AMACIM : custom bir exception sistemini kurmak, gelebilecek exceptionları override ederek, istediğim yapıda cevap verilmesini sağlamak
+    // Factory Design Pattern kullanıldı
+    Logger logger = LoggerFactory.getLogger(CarRentExceptionHandler.class);
 
-    /*
-        porojenin neresinden exception gelirse gelsin buradan handle edilecek
-        Gelebilecek tüm exceptionların burada setlenemesi gerekli
-        -Bunu yapmazsak tahmin edemeyeceğimiz exceptionlar client tarafına fırlar ve anlamsız olur.
-
-        *exception nereden gelirse hangi exception olursa olsun bu classda handle edilecek ve ApıResponseError
-         classındaki formata göre düznlenerek gönderilecek. ApıResponseError classında ki tüm fieldları istediğim gibi düzenleyebileceğim.
-         *Yüzlerce exception var ancak fırlama ihtimali yüksek olan 6-7 exceptionı overrride edeceğiz. Bunların haricinde fırlama ihtimali
-         olanları da paren exception ile handle edeceğiz
-        *Central exception handler sayesinde loglamalarıda tek yerde yapabiliyorum
- */
-    Logger logger = LoggerFactory.getLogger(SafeRentExceptionHandler.class);//Factory Design Pattern kullanılmış
-    // loglanmasını istediğimiz class ismini parametre olarak yazarız
     private ResponseEntity<Object> buildResponseEntity(ApiResponseError error) {
         logger.error(error.getMessage());//bu satırla tüm exceptionları loglamış oluyoruz. buraya yazmasaydık aşağıdaki her metoda ayrı ayrı yazmak zorunda kalırdık
         return new ResponseEntity<>(error,error.getStatus());
     }
-    // protected zorunlu değil. bunun sayesinde bu clasa inherit ettiğimiz diğer classlardan da ulaşılabilsin diye. direk public yazmıyoruz ki exception classının dışından ulaşılmasın diye
     @ExceptionHandler(ResourceNotFoundException.class)
     protected ResponseEntity<Object> handleResourceNotFoundException( // dönen herşeyi karşılayabilmesi için object yazdık, metot adını biz verdik
                                                                       ResourceNotFoundException ex, //exceptionun kendisine ulaşmak için bu parametreyi yazdık // exception fırlayınca bu metoda gelsinki burada handle edeyim
@@ -50,7 +37,7 @@ public class SafeRentExceptionHandler extends ResponseEntityExceptionHandler {
                 request.getDescription(false) // gereksiz bilgiler gelmesim
         );
 
-        return buildResponseEntity(error); //her defasında uzun uzun yazmamak için bu şekilde yazdık. yukarıda tek seferlik bir metot oluşturduk
+        return buildResponseEntity(error);
 
     }
 
@@ -96,10 +83,8 @@ public class SafeRentExceptionHandler extends ResponseEntityExceptionHandler {
 
 
     protected ResponseEntity<Object> handleMethodArgumentNotValid(MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatus status, WebRequest request) {
-        //Bir metodun argümanları geçerli olmadığında (validasyon hataları) çağrılır.
 
-        // birden fazla argumanın notValid olması ihtimaline karşı List yapısı kullanıyoruz
-        List<String> errors = ex.getBindingResult().//fırlayan exceptionların listesini verir
+        List<String> errors = ex.getBindingResult().
                 getFieldErrors().//her bir field ın errorunu verir. kaç argümanda validasyona takıldıysa herbirini verir. mesela client ın girdiği name ve telNo NotValid. Bu ikisini aşağıda akışa girecek. Bunlardan herbir i aslında farklı errorlar.
                 stream().//akışa çevirdik
                 map(e->e.getDefaultMessage()). // akıştan her errorun default mesajlarına akışı çevirir

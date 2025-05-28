@@ -1,4 +1,4 @@
-package com.iuc.test;
+package com.iuc.test.service;
 
 import com.iuc.service.EmailService;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,5 @@
-package com.iuc.test;
+package com.iuc.test.service;
 
-import com.iuc.dto.ImageFileDTO;
-import com.iuc.entities.ImageData;
 import com.iuc.entities.ImageFile;
 import com.iuc.exception.ResourceNotFoundException;
 import com.iuc.repository.ImageFileRepository;
@@ -15,7 +13,6 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.mock.web.MockMultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;

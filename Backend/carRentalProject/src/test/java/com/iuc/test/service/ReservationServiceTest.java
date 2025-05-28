@@ -1,16 +1,14 @@
-package com.iuc.test;
+package com.iuc.test.service;
 
 
 import com.iuc.dto.ReservationDTO;
 import com.iuc.dto.request.ReservationRequest;
-import com.iuc.dto.request.ReservationUpdateRequest;
 import com.iuc.entities.Car;
 import com.iuc.entities.Reservation;
 import com.iuc.entities.User;
 import com.iuc.entities.enums.ReservationStatus;
 import com.iuc.exception.BadRequestException;
 import com.iuc.exception.ResourceNotFoundException;
-import com.iuc.exception.message.ErrorMessage;
 import com.iuc.mapper.ReservationMapper;
 import com.iuc.repository.ReservationRepository;
 import com.iuc.service.ReservationService;

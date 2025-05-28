@@ -1,4 +1,4 @@
-package com.iuc.test;
+package com.iuc.test.service;
 
 import com.iuc.dto.UserDTO;
 import com.iuc.dto.request.RegisterRequest;

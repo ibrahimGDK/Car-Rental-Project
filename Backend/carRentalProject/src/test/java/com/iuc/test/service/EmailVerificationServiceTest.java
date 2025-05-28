@@ -1,4 +1,4 @@
-package com.iuc.test;
+package com.iuc.test.service;
 
 import com.iuc.entities.User;
 import com.iuc.entities.VerificationToken;

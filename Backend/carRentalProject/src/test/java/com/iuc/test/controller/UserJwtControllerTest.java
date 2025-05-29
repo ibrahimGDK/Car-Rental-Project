@@ -12,6 +12,10 @@ import jakarta.validation.Valid;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,21 +29,23 @@ import java.util.Collections;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 class UserJwtControllerTest {
 
-    @InjectMocks
+    @Autowired
     private UserJwtController userJwtController;
 
-    @Mock
+    @MockBean
     private JwtUtils jwtUtils;
 
-    @Mock
+    @MockBean
     private UserService userService;
 
-    @Mock
+    @MockBean
     private AuthenticationManager authenticationManager;
 
-    @Mock
+    @MockBean
     private Authentication authentication;
 
     @BeforeEach

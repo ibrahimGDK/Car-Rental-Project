@@ -13,20 +13,26 @@ import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.test.context.support.WithMockUser;
 
 import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 public class UserControllerTest {
 
-    @InjectMocks
+    @Autowired
     private UserController userController;
 
-    @Mock
+    @MockBean
     private UserService userService;
 
     @BeforeEach
@@ -35,6 +41,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testGetAllUsers() {
         List<UserDTO> userList = Arrays.asList(new UserDTO(), new UserDTO());
         when(userService.getAllUsers()).thenReturn(userList);
@@ -47,6 +54,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testGetUserById() {
         UserDTO mockUser = new UserDTO();
         when(userService.getUserById(1L)).thenReturn(mockUser);
@@ -59,6 +67,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testUpdatePassword() {
         UpdatePasswordRequest request = new UpdatePasswordRequest();
 
@@ -71,6 +80,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testUpdateUser() {
         UserUpdateRequest request = new UserUpdateRequest();
 
@@ -83,6 +93,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testUpdateUserAuth() {
         AdminUserUpdateRequest request = new AdminUserUpdateRequest();
 
@@ -95,6 +106,7 @@ public class UserControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testDeleteUser() {
         ResponseEntity<SfResponse> response = userController.deleteUser(2L);
 

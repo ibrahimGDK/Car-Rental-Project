@@ -2,8 +2,8 @@ package com.iuc.mapper;
 import com.iuc.dto.ContactMessageDTO;
 import com.iuc.dto.request.ContactMessageRequest;
 import com.iuc.entities.ContactMessage;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.mapstruct.*;
+//import org.mapstruct.Mapping;
 
 import java.util.List;
 

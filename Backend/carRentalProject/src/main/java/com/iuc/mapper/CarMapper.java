@@ -3,9 +3,9 @@ package com.iuc.mapper;
 import com.iuc.dto.CarDTO;
 import com.iuc.entities.Car;
 import com.iuc.entities.ImageFile;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Named;
+import org.mapstruct.*;
+//import org.mapstruct.Mapping;
+//import org.mapstruct.Named;
 
 import java.util.HashSet;
 import java.util.List;

@@ -1,29 +1,30 @@
 package com.iuc.test.controller;
 
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.iuc.controller.CarController;
 import com.iuc.dto.CarDTO;
 import com.iuc.dto.response.ResponseMessage;
+import com.iuc.dto.response.SfResponse;
 import com.iuc.service.CarService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
-import org.springframework.http.MediaType;
-import org.springframework.data.domain.*;
-import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.*;
+import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 
-import java.util.Arrays;
 import java.util.List;
 
+import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(controllers = CarController.class, excludeAutoConfiguration = SecurityAutoConfiguration.class)
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 public class CarControllerTest {
 
     @Autowired
@@ -53,6 +54,7 @@ public class CarControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testSaveCar() throws Exception {
         doNothing().when(carService).saveCar(anyString(), any(CarDTO.class));
 
@@ -66,12 +68,14 @@ public class CarControllerTest {
 
     @Test
     void testGetAllCars() throws Exception {
-        List<CarDTO> cars = Arrays.asList(carDTO);
+        List<CarDTO> cars = List.of(carDTO);
         when(carService.getAllCars()).thenReturn(cars);
 
         mockMvc.perform(get("/car/visitors/all"))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.length()").value(1));
+                .andExpect(jsonPath("$").isArray())
+                .andExpect(jsonPath("$.length()").value(1))
+                .andExpect(jsonPath("$[0].model").value("Toyota"));
     }
 
     @Test
@@ -100,6 +104,7 @@ public class CarControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testUpdateCar() throws Exception {
         doNothing().when(carService).updateCar(eq(1L), anyString(), any(CarDTO.class));
 
@@ -114,6 +119,7 @@ public class CarControllerTest {
     }
 
     @Test
+    @WithMockUser(roles = "ADMIN")
     void testDeleteCar() throws Exception {
         doNothing().when(carService).removeById(1L);
 
@@ -123,4 +129,3 @@ public class CarControllerTest {
                 .andExpect(jsonPath("$.success").value(true));
     }
 }
-

@@ -11,9 +11,14 @@ import com.iuc.entities.User;
 import com.iuc.service.CarService;
 import com.iuc.service.ReservationService;
 import com.iuc.service.UserService;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.domain.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -24,19 +29,22 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+@SpringBootTest
+@AutoConfigureMockMvc(addFilters = false)
 class ReservationControllerTest {
 
-    @InjectMocks
+    @Autowired
     private ReservationController reservationController;
 
-    @Mock
+    @MockBean
     private ReservationService reservationService;
 
-    @Mock
+    @MockBean
     private CarService carService;
 
-    @Mock
+    @MockBean
     private UserService userService;
+
 
     private AutoCloseable closeable;
 
@@ -44,9 +52,13 @@ class ReservationControllerTest {
     void setup() {
         closeable = MockitoAnnotations.openMocks(this);
     }
+    @AfterEach
+    void tearDown() throws Exception {
+        closeable.close();
+    }
 
     @Test
-    @WithMockUser(roles = {"CUSTOMER"})
+    @WithMockUser(roles = "ADMIN")
     void testMakeReservation() {
         Long carId = 1L;
         ReservationRequest request = new ReservationRequest();
@@ -64,7 +76,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = "ADMIN")
     void testAddReservationAsAdmin() {
         Long carId = 2L;
         Long userId = 1L;
@@ -83,7 +95,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = "ADMIN")
     void testGetAllReservations() {
         List<ReservationDTO> reservations = List.of(new ReservationDTO(), new ReservationDTO());
 
@@ -96,7 +108,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = "ADMIN")
     void testGetAllReservationsWithPage() {
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
         Page<ReservationDTO> page = new PageImpl<>(List.of(new ReservationDTO()));
@@ -110,7 +122,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"CUSTOMER"})
+    @WithMockUser(roles = "ADMIN")
     void testCheckCarIsAvailable() {
         Long carId = 1L;
         LocalDateTime pickUp = LocalDateTime.now().plusDays(1);
@@ -129,7 +141,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = "ADMIN")
     void testUpdateReservation() {
         Long carId = 1L;
         Long reservationId = 2L;
@@ -145,7 +157,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = "ADMIN")
     void testGetReservationById() {
         Long id = 3L;
         ReservationDTO dto = new ReservationDTO();
@@ -157,7 +169,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = "ADMIN")
     void testGetAllUserReservationsForAdmin() {
         User user = new User();
         Pageable pageable = PageRequest.of(0, 5, Sort.by(Sort.Direction.ASC, "id"));
@@ -173,7 +185,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"CUSTOMER"})
+    @WithMockUser(roles = "ADMIN")
     void testGetUserReservationById() {
         Long id = 1L;
         User user = new User();
@@ -188,7 +200,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"CUSTOMER"})
+    @WithMockUser(roles = "ADMIN")
     void testGetAllUserReservations() {
         User user = new User();
         Pageable pageable = PageRequest.of(0, 10, Sort.by(Sort.Direction.DESC, "id"));
@@ -203,7 +215,7 @@ class ReservationControllerTest {
     }
 
     @Test
-    @WithMockUser(roles = {"ADMIN"})
+    @WithMockUser(roles = "ADMIN")
     void testDeleteReservation() {
         ResponseEntity<SfResponse> response = reservationController.deleteReservation(1L);
 

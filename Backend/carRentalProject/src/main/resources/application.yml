@@ -8,7 +8,7 @@ server:
 
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/car_rental_db
+    url: jdbc:postgresql://db:5432/car_rental_db
     username: dev_user
     password: dev_password
 

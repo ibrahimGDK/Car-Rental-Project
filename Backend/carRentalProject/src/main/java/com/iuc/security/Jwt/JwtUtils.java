@@ -16,7 +16,7 @@ public class JwtUtils {
     jwt->username
      */
 
-    private String jwtSecret="patika*";
+    private String jwtSecret="iucceng*";
     private Long jwtExpirationMS =86400000L;     //24*60*60*1000
 
     //token üretiyoruz

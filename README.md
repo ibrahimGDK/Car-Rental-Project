@@ -48,7 +48,7 @@
   </tr>
   <tr>
     <td>Testing Tools</td>
-    <td>JUnit</td>
+    <td>JUnit, Mockito</td>
   </tr>
 </table>
 

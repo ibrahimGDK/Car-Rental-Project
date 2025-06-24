@@ -35,10 +35,6 @@
     <td>Java, Spring Boot, Spring Security, Hibernate</td>
   </tr>
   <tr>
-    <td>Frontend</td>
-    <td>HTML, CSS, JavaScript</td>
-  </tr>
-  <tr>
     <td>Database</td>
     <td>PostgreSQL</td>
   </tr>
@@ -47,20 +43,12 @@
     <td>JWT + Email Verification</td>
   </tr>
   <tr>
-    <td>CI/CD</td>
-    <td>GitHub Actions</td>
-  </tr>
-  <tr>
     <td>Containerization</td>
     <td>Docker</td>
   </tr>
   <tr>
     <td>Testing Tools</td>
-    <td>JUnit, Selenium</td>
-  </tr>
-  <tr>
-    <td>Version Control</td>
-    <td>Git & GitHub</td>
+    <td>JUnit</td>
   </tr>
 </table>
 

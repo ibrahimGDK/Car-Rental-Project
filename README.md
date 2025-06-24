@@ -18,9 +18,7 @@
   <li>Email Notifications (Reservation confirmation, reminders)</li>
   <li>Secure Authentication (Spring Security + JWT)</li>
   <li>CRUD Operations</li>
-  <li>Mobile-friendly frontend interface</li>
   <li>Dockerized setup for easy deployment</li>
-  <li>CI/CD Pipeline for automated testing & deployment</li>
 </ul>
 
 <hr/>
@@ -83,11 +81,6 @@ cd backend
 ./mvnw spring-boot:run
 </pre>
 
-<h3>3️⃣ Frontend Setup</h3>
-<pre>
-cd frontend
-# Open HTML file in browser
-</pre>
 
 <h3>4️⃣ Docker Usage (Optional)</h3>
 <pre>
@@ -96,40 +89,6 @@ docker-compose up --build
 
 <hr/>
 
-<h2>📡 <b>API Endpoints </b></h2>
-
-<table>
-  <tr>
-    <th>Endpoint</th>
-    <th>Description</th>
-    <th>Method</th>
-  </tr>
-  <tr>
-    <td>/api/auth/register</td>
-    <td>User Registration</td>
-    <td>POST</td>
-  </tr>
-  <tr>
-    <td>/api/auth/login</td>
-    <td>User Login</td>
-    <td>POST</td>
-  </tr>
-  <tr>
-    <td>/api/cars</td>
-    <td>List Cars</td>
-    <td>GET</td>
-  </tr>
-  <tr>
-    <td>/api/cars</td>
-    <td>Add New Car (Admin Only)</td>
-    <td>POST</td>
-  </tr>
-  <tr>
-    <td>/api/reservations</td>
-    <td>Make Reservation</td>
-    <td>POST</td>
-  </tr>
-</table>
 
 <hr/>
 
@@ -142,15 +101,15 @@ docker-compose up --build
   </tr>
   <tr>
     <td>İbrahim</td>
-    <td>Backend Developer: Spring Boot, API development, DB integration, Spring Security</td>
+    <td>Backend Developer: Spring Boot, API development, DB integration, Spring Security, Docker</td>
   </tr>
   <tr>
     <td>Hakan</td>
-    <td>Frontend Developer: HTML, CSS, JavaScript UI development</td>
+    <td>Backend Developer: Spring Boot, API development, Spring Security</td>
   </tr>
   <tr>
     <td>Emre</td>
-    <td>DevOps & Testing: Docker, CI/CD setup, test automation (JUnit, Selenium)</td>
+    <td>Backend Developer: Spring Boot, API development, Spring Security</td>
   </tr>
 </table>
 
@@ -165,6 +124,6 @@ docker-compose up --build
 <ul>
   <li>İbrahim Ercan Gedik: ibrahimercangedik@ogr.iuc.edu.tr</li>
   <li>Hakan Babur: hakanbabur@ogr.iuc.edu.tr</li>
-  <li>Emre Açıl:emreacil@ogr.iuc.edu.tr</li>
+  <li>Emre Açıl: emreacil@ogr.iuc.edu.tr</li>
 </ul>
 
